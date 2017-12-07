@@ -1,0 +1,10 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<?eclipse version="3.0"?>
+<plugin>
+  <extension point="org.eclipse.sirius.componentization">
+    <component class="br.com.ufpe.bernason.modeloconceitualer.design.Activator"
+               id="br.com.ufpe.bernason.modeloconceitualer.design"
+	       name="modeloconceitualer">
+    </component>
+  </extension>
+</plugin>

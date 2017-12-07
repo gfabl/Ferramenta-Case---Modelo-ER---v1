@@ -1,0 +1,277 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<description:Group xmi:version="2.0" xmlns:xmi="http://www.omg.org/XMI" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:description="http://www.eclipse.org/sirius/description/1.1.0" xmlns:description_1="http://www.eclipse.org/sirius/diagram/description/1.1.0" xmlns:style="http://www.eclipse.org/sirius/diagram/description/style/1.1.0" xmlns:tool="http://www.eclipse.org/sirius/diagram/description/tool/1.1.0" xmlns:tool_1="http://www.eclipse.org/sirius/description/tool/1.1.0" xmlns:validation="http://www.eclipse.org/sirius/description/validation/1.1.0" name="modeloconceitualer" version="12.0.0.2017041100">
+  <ownedViewpoints name="Viewpoint" modelFileExtension="modeloconceitualer">
+    <ownedRepresentations xsi:type="description_1:DiagramDescription" name="Diagram" domainClass="modeloConceitualER::Schema">
+      <metamodel href="http://www.example.org/modeloConceitualER#/"/>
+      <validationSet>
+        <ownedRules xsi:type="validation:SemanticValidationRule" name="Avoid Double Link between Attributes" level="ERROR" message="Proibido mais de 1 link entre 2 atributos" targetClass="modeloConceitualER::Attribute">
+          <audits auditExpression="aql:self.attributeLink2.targetAttribute->excludes(self.attributeLink1.sourceAttribute)"/>
+        </ownedRules>
+        <ownedRules xsi:type="validation:SemanticValidationRule" name="Multiple links between the same ER" level="ERROR" message="Proibido mais de 1 link entre o mesmo par de ER" targetClass="modeloConceitualER::RelationshipLink">
+          <audits auditExpression="[(self.sourceRelation.entity.targetRelation->count(self.targetRelation))=1/]"/>
+        </ownedRules>
+        <ownedRules xsi:type="validation:SemanticValidationRule" name="*Multiple links between the same Ent-Att" level="ERROR" message="Proibido mais de 1 link entre o mesmo par de Ent-Atr" targetClass="modeloConceitualER::AttributeLink">
+          <audits auditExpression="[(self.sourceAttribute.attributeLink2.targetAttribute->count(self.targetAttribute))=1/]"/>
+        </ownedRules>
+        <ownedRules xsi:type="validation:SemanticValidationRule" name="*Multiple links between the same Rel-Att" message="Proibido mais de 1 link entre o mesmo par de Rel-Atr"/>
+        <ownedRules xsi:type="validation:SemanticValidationRule" name="Entity without attributes" level="ERROR" message="Entidade deve ter pelo menos 1 atributo associado" targetClass="modeloConceitualER::Entity">
+          <audits auditExpression="[self.attributeLink2->notEmpty()/]"/>
+        </ownedRules>
+        <ownedRules xsi:type="validation:SemanticValidationRule" name="Entity without Identified Attribute" level="ERROR" message="Entidade precisa ter atributo identificador" targetClass="modeloConceitualER::Entity">
+          <audits auditExpression="[self.attributeLink2.targetAttribute.type.toString()->includes('IDENTIFIER')/]"/>
+        </ownedRules>
+        <ownedRules xsi:type="validation:SemanticValidationRule" name="Relationship Alone" level="ERROR" message="Proibido relacionamento sem ligações" targetClass="modeloConceitualER::Relationship">
+          <audits auditExpression="[self.relationship->notEmpty()/]"/>
+        </ownedRules>
+        <ownedRules xsi:type="validation:SemanticValidationRule" name="Attribute Alone" level="ERROR" message="Proibido atributos sem ligação no diagrama" targetClass="modeloConceitualER::Attribute">
+          <audits auditExpression="[self.attributeLink1->notEmpty()/]"/>
+        </ownedRules>
+        <ownedRules xsi:type="validation:SemanticValidationRule" name="Relationship Attribute - Change Identifier to Discriminator" level="ERROR" message="Em relacionamento não é permitido atributo identificador" targetClass="modeloConceitualER::Relationship">
+          <audits auditExpression="[self.attributeLink2->isEmpty() or not(self.attributeLink2.targetAttribute.type.toString()->includes('IDENTIFIER'))/]"/>
+        </ownedRules>
+      </validationSet>
+      <defaultLayer name="Default">
+        <nodeMappings name="Entity" deletionDescription="//@ownedViewpoints[name='Viewpoint']/@ownedRepresentations[name='Diagram']/@defaultLayer/@toolSections.0/@ownedTools[name='Entity%20Instances']" semanticCandidatesExpression="feature:has_elements" domainClass="modeloConceitualER::Entity">
+          <conditionnalStyles predicateExpression="[self.entity->select(p | p.isIdentifier)->size()>0/]">
+            <style xsi:type="style:WorkspaceImageDescription" showIcon="false" sizeComputationExpression="-1" labelPosition="node" resizeKind="NSEW" workspacePath="/br.com.ufpe.bernason.modeloconceitualer.design/Images/EntidadeFraca.png">
+              <borderColor xsi:type="description:SystemColor" href="environment:/viewpoint#//@systemColors/@entries[name='black']"/>
+              <labelColor xsi:type="description:SystemColor" href="environment:/viewpoint#//@systemColors/@entries[name='black']"/>
+            </style>
+          </conditionnalStyles>
+          <conditionnalStyles predicateExpression="[self.entity->select(p | p.isIdentifier)->size()=0/]">
+            <style xsi:type="style:WorkspaceImageDescription" showIcon="false" sizeComputationExpression="-1" labelPosition="node" resizeKind="NSEW" workspacePath="/br.com.ufpe.bernason.modeloconceitualer.design/Images/Entidade.png">
+              <borderColor xsi:type="description:SystemColor" href="environment:/viewpoint#//@systemColors/@entries[name='black']"/>
+              <labelColor xsi:type="description:SystemColor" href="environment:/viewpoint#//@systemColors/@entries[name='black']"/>
+            </style>
+          </conditionnalStyles>
+        </nodeMappings>
+        <nodeMappings name="Relationship" deletionDescription="//@ownedViewpoints[name='Viewpoint']/@ownedRepresentations[name='Diagram']/@defaultLayer/@toolSections.0/@ownedTools[name='Relationship%20Instances']" semanticCandidatesExpression="feature:has_elements" domainClass="modeloConceitualER::Relationship">
+          <conditionnalStyles predicateExpression="[self.relationship->select(p | p.isIdentifier)->size()>0/]">
+            <style xsi:type="style:WorkspaceImageDescription" sizeComputationExpression="-1" labelPosition="node" resizeKind="NSEW" workspacePath="/br.com.ufpe.bernason.modeloconceitualer.design/Images/RelacionamentoIdentificador.png">
+              <borderColor xsi:type="description:SystemColor" href="environment:/viewpoint#//@systemColors/@entries[name='black']"/>
+              <labelColor xsi:type="description:SystemColor" href="environment:/viewpoint#//@systemColors/@entries[name='black']"/>
+            </style>
+          </conditionnalStyles>
+          <conditionnalStyles predicateExpression="[self.relationship->select(p | p.isIdentifier)->size()=0/]">
+            <style xsi:type="style:WorkspaceImageDescription" sizeComputationExpression="-1" labelPosition="node" resizeKind="NSEW" workspacePath="/br.com.ufpe.bernason.modeloconceitualer.design/Images/Relacionamento.png">
+              <borderColor xsi:type="description:SystemColor" href="environment:/viewpoint#//@systemColors/@entries[name='black']"/>
+              <labelColor xsi:type="description:SystemColor" href="environment:/viewpoint#//@systemColors/@entries[name='black']"/>
+            </style>
+          </conditionnalStyles>
+        </nodeMappings>
+        <nodeMappings name="Attribute" deletionDescription="//@ownedViewpoints[name='Viewpoint']/@ownedRepresentations[name='Diagram']/@defaultLayer/@toolSections.0/@ownedTools[name='Attribute%20Instances']" semanticCandidatesExpression="feature:has_elements" domainClass="modeloConceitualER::Attribute">
+          <conditionnalStyles predicateExpression="[self.type.toString()='IDENTIFIER'/]">
+            <style xsi:type="style:WorkspaceImageDescription" labelSize="10" showIcon="false" sizeComputationExpression="7" labelPosition="node" resizeKind="NSEW" workspacePath="/br.com.ufpe.bernason.modeloconceitualer.design/Images/AtributoDiscriminador.png">
+              <borderColor xsi:type="description:SystemColor" href="environment:/viewpoint#//@systemColors/@entries[name='black']"/>
+              <labelFormat>underline</labelFormat>
+              <labelColor xsi:type="description:SystemColor" href="environment:/viewpoint#//@systemColors/@entries[name='black']"/>
+            </style>
+          </conditionnalStyles>
+          <conditionnalStyles predicateExpression="[self.type.toString()='DERIVED'/]">
+            <style xsi:type="style:WorkspaceImageDescription" borderLineStyle="dash_dot" labelSize="10" showIcon="false" sizeComputationExpression="7" labelPosition="node" resizeKind="NSEW" workspacePath="/br.com.ufpe.bernason.modeloconceitualer.design/Images/AtributoDerivado.png">
+              <borderColor xsi:type="description:SystemColor" href="environment:/viewpoint#//@systemColors/@entries[name='black']"/>
+              <labelColor xsi:type="description:SystemColor" href="environment:/viewpoint#//@systemColors/@entries[name='black']"/>
+            </style>
+          </conditionnalStyles>
+          <conditionnalStyles predicateExpression="[self.type.toString()='MULTIVALUED'/]">
+            <style xsi:type="style:WorkspaceImageDescription" showIcon="false" sizeComputationExpression="7" labelPosition="node" resizeKind="NSEW" workspacePath="/br.com.ufpe.bernason.modeloconceitualer.design/Images/AtributoMultivalorado.png">
+              <borderColor xsi:type="description:SystemColor" href="environment:/viewpoint#//@systemColors/@entries[name='black']"/>
+              <labelColor xsi:type="description:SystemColor" href="environment:/viewpoint#//@systemColors/@entries[name='black']"/>
+            </style>
+          </conditionnalStyles>
+          <conditionnalStyles predicateExpression="[self.type.toString()='DISCRIMINATOR'/]">
+            <style xsi:type="style:WorkspaceImageDescription" labelSize="10" showIcon="false" sizeComputationExpression="7" labelPosition="node" resizeKind="NSEW" workspacePath="/br.com.ufpe.bernason.modeloconceitualer.design/Images/AtributoDiscriminador.png">
+              <borderColor xsi:type="description:SystemColor" href="environment:/viewpoint#//@systemColors/@entries[name='black']"/>
+              <labelColor xsi:type="description:SystemColor" href="environment:/viewpoint#//@systemColors/@entries[name='black']"/>
+            </style>
+          </conditionnalStyles>
+          <conditionnalStyles predicateExpression="[self.type.toString()='COMMON'/]">
+            <style xsi:type="style:WorkspaceImageDescription" labelSize="10" showIcon="false" sizeComputationExpression="7" labelPosition="node" resizeKind="NSEW" workspacePath="/br.com.ufpe.bernason.modeloconceitualer.design/Images/Atributo.png">
+              <borderColor xsi:type="description:SystemColor" href="environment:/viewpoint#//@systemColors/@entries[name='black']"/>
+              <labelColor xsi:type="description:SystemColor" href="environment:/viewpoint#//@systemColors/@entries[name='black']"/>
+            </style>
+          </conditionnalStyles>
+        </nodeMappings>
+        <edgeMappings name="RelationshipLink" semanticCandidatesExpression="feature:has_links" sourceMapping="//@ownedViewpoints[name='Viewpoint']/@ownedRepresentations[name='Diagram']/@defaultLayer/@nodeMappings[name='Entity']" targetMapping="//@ownedViewpoints[name='Viewpoint']/@ownedRepresentations[name='Diagram']/@defaultLayer/@nodeMappings[name='Relationship']" targetFinderExpression="feature:targetRelation" sourceFinderExpression="feature:sourceRelation" domainClass="modeloConceitualER::RelationshipLink" useDomainElement="true">
+          <conditionnalStyles predicateExpression="[(self.participation.toString()='TOTAL')and(self.isIdentifier.toString()='false')and(self.cardinality.toString()='ONE')/]">
+            <style lineStyle="dot" sizeComputationExpression="2">
+              <strokeColor xsi:type="description:SystemColor" href="environment:/viewpoint#//@systemColors/@entries[name='gray']"/>
+              <centerLabelStyleDescription showIcon="false" labelExpression="aql:'1'">
+                <labelColor xsi:type="description:SystemColor" href="environment:/viewpoint#//@systemColors/@entries[name='black']"/>
+              </centerLabelStyleDescription>
+            </style>
+          </conditionnalStyles>
+          <conditionnalStyles predicateExpression="[(self.participation.toString()='TOTAL')and(self.isIdentifier.toString()='true')and(self.cardinality.toString()='ONE')/]">
+            <style lineStyle="dot" sizeComputationExpression="2">
+              <strokeColor xsi:type="description:SystemColor" href="environment:/viewpoint#//@systemColors/@entries[name='gray']"/>
+              <centerLabelStyleDescription showIcon="false" labelExpression="aql:'1'">
+                <labelColor xsi:type="description:SystemColor" href="environment:/viewpoint#//@systemColors/@entries[name='black']"/>
+              </centerLabelStyleDescription>
+            </style>
+          </conditionnalStyles>
+          <conditionnalStyles predicateExpression="[(self.participation.toString()='PARTIAL')and(self.isIdentifier.toString()='false')and(self.cardinality.toString()='ONE')/]">
+            <style sizeComputationExpression="2">
+              <strokeColor xsi:type="description:SystemColor" href="environment:/viewpoint#//@systemColors/@entries[name='dark_green']"/>
+              <centerLabelStyleDescription showIcon="false" labelExpression="aql:'1'">
+                <labelColor xsi:type="description:SystemColor" href="environment:/viewpoint#//@systemColors/@entries[name='black']"/>
+              </centerLabelStyleDescription>
+            </style>
+          </conditionnalStyles>
+          <conditionnalStyles predicateExpression="[(self.participation.toString()='PARTIAL')and(self.isIdentifier.toString()='true')and(self.cardinality.toString()='ONE')/]">
+            <style lineStyle="dot" sizeComputationExpression="2">
+              <strokeColor xsi:type="description:SystemColor" href="environment:/viewpoint#//@systemColors/@entries[name='gray']"/>
+              <centerLabelStyleDescription showIcon="false" labelExpression="aql:'1'">
+                <labelColor xsi:type="description:SystemColor" href="environment:/viewpoint#//@systemColors/@entries[name='black']"/>
+              </centerLabelStyleDescription>
+            </style>
+          </conditionnalStyles>
+          <conditionnalStyles predicateExpression="[(self.participation.toString()='TOTAL')and(self.isIdentifier.toString()='false')and(self.cardinality.toString()='MANY')/]">
+            <style lineStyle="dot" sizeComputationExpression="2">
+              <strokeColor xsi:type="description:SystemColor" href="environment:/viewpoint#//@systemColors/@entries[name='gray']"/>
+              <centerLabelStyleDescription showIcon="false" labelExpression="aql:'N'">
+                <labelColor xsi:type="description:SystemColor" href="environment:/viewpoint#//@systemColors/@entries[name='black']"/>
+              </centerLabelStyleDescription>
+            </style>
+          </conditionnalStyles>
+          <conditionnalStyles predicateExpression="[(self.participation.toString()='TOTAL')and(self.isIdentifier.toString()='true')and(self.cardinality.toString()='MANY')/]">
+            <style lineStyle="dot" sizeComputationExpression="2">
+              <strokeColor xsi:type="description:SystemColor" href="environment:/viewpoint#//@systemColors/@entries[name='gray']"/>
+              <centerLabelStyleDescription showIcon="false" labelExpression="aql:'N'">
+                <labelColor xsi:type="description:SystemColor" href="environment:/viewpoint#//@systemColors/@entries[name='black']"/>
+              </centerLabelStyleDescription>
+            </style>
+          </conditionnalStyles>
+          <conditionnalStyles predicateExpression="[(self.participation.toString()='PARTIAL')and(self.isIdentifier.toString()='false')and(self.cardinality.toString()='MANY')/]">
+            <style sizeComputationExpression="2">
+              <strokeColor xsi:type="description:SystemColor" href="environment:/viewpoint#//@systemColors/@entries[name='dark_green']"/>
+              <centerLabelStyleDescription showIcon="false" labelExpression="aql:'N'">
+                <labelColor xsi:type="description:SystemColor" href="environment:/viewpoint#//@systemColors/@entries[name='black']"/>
+              </centerLabelStyleDescription>
+            </style>
+          </conditionnalStyles>
+          <conditionnalStyles predicateExpression="[(self.participation.toString()='PARTIAL')and(self.isIdentifier.toString()='true')and(self.cardinality.toString()='MANY')/]">
+            <style lineStyle="dot" sizeComputationExpression="2">
+              <strokeColor xsi:type="description:SystemColor" href="environment:/viewpoint#//@systemColors/@entries[name='gray']"/>
+              <centerLabelStyleDescription showIcon="false" labelExpression="aql:'N'">
+                <labelColor xsi:type="description:SystemColor" href="environment:/viewpoint#//@systemColors/@entries[name='black']"/>
+              </centerLabelStyleDescription>
+            </style>
+          </conditionnalStyles>
+        </edgeMappings>
+        <edgeMappings name="AttributeLink" semanticCandidatesExpression="feature:has_links" sourceMapping="//@ownedViewpoints[name='Viewpoint']/@ownedRepresentations[name='Diagram']/@defaultLayer/@nodeMappings[name='Entity'] //@ownedViewpoints[name='Viewpoint']/@ownedRepresentations[name='Diagram']/@defaultLayer/@nodeMappings[name='Relationship'] //@ownedViewpoints[name='Viewpoint']/@ownedRepresentations[name='Diagram']/@defaultLayer/@nodeMappings[name='Attribute']" targetMapping="//@ownedViewpoints[name='Viewpoint']/@ownedRepresentations[name='Diagram']/@defaultLayer/@nodeMappings[name='Attribute']" targetFinderExpression="feature:targetAttribute" sourceFinderExpression="feature:sourceAttribute" domainClass="modeloConceitualER::AttributeLink" useDomainElement="true">
+          <style targetArrow="NoDecoration" sizeComputationExpression="2">
+            <strokeColor xsi:type="description:SystemColor" href="environment:/viewpoint#//@systemColors/@entries[name='red']"/>
+            <centerLabelStyleDescription>
+              <labelColor xsi:type="description:SystemColor" href="environment:/viewpoint#//@systemColors/@entries[name='black']"/>
+            </centerLabelStyleDescription>
+          </style>
+        </edgeMappings>
+        <toolSections name="Pallette">
+          <ownedTools xsi:type="tool:NodeCreationDescription" name="Entity" forceRefresh="true" nodeMappings="//@ownedViewpoints[name='Viewpoint']/@ownedRepresentations[name='Diagram']/@defaultLayer/@nodeMappings[name='Entity']">
+            <variable name="container"/>
+            <viewVariable name="containerView"/>
+            <initialOperation>
+              <firstModelOperations xsi:type="tool_1:ChangeContext" browseExpression="var:container">
+                <subModelOperations xsi:type="tool_1:CreateInstance" typeName="modeloConceitualER::Entity" referenceName="has_elements">
+                  <subModelOperations xsi:type="tool_1:SetValue" featureName="name" valueExpression="aql:'Entidade'+container.has_elements->filter(modeloConceitualER::Entity)->size()"/>
+                </subModelOperations>
+              </firstModelOperations>
+            </initialOperation>
+          </ownedTools>
+          <ownedTools xsi:type="tool:NodeCreationDescription" name="Relationship" nodeMappings="//@ownedViewpoints[name='Viewpoint']/@ownedRepresentations[name='Diagram']/@defaultLayer/@nodeMappings[name='Relationship']">
+            <variable name="container"/>
+            <viewVariable name="containerView"/>
+            <initialOperation>
+              <firstModelOperations xsi:type="tool_1:ChangeContext" browseExpression="var:container">
+                <subModelOperations xsi:type="tool_1:CreateInstance" typeName="modeloConceitualER::Relationship" referenceName="has_elements">
+                  <subModelOperations xsi:type="tool_1:SetValue" featureName="name" valueExpression="aql:'relationship'+container.has_elements->filter(modeloConceitualER::Relationship)->size()"/>
+                </subModelOperations>
+              </firstModelOperations>
+            </initialOperation>
+          </ownedTools>
+          <ownedTools xsi:type="tool:EdgeCreationDescription" name="RelationshipLink" precondition="aql:preTarget.differs(preSource)" edgeMappings="//@ownedViewpoints[name='Viewpoint']/@ownedRepresentations[name='Diagram']/@defaultLayer/@edgeMappings[name='RelationshipLink']" extraSourceMappings="//@ownedViewpoints[name='Viewpoint']/@ownedRepresentations[name='Diagram']/@defaultLayer/@nodeMappings[name='Entity']" extraTargetMappings="//@ownedViewpoints[name='Viewpoint']/@ownedRepresentations[name='Diagram']/@defaultLayer/@nodeMappings[name='Relationship']">
+            <sourceVariable name="source"/>
+            <targetVariable name="target"/>
+            <sourceViewVariable name="sourceView"/>
+            <targetViewVariable name="targetView"/>
+            <initialOperation>
+              <firstModelOperations xsi:type="tool_1:ChangeContext" browseExpression="[source.eContainer()/]">
+                <subModelOperations xsi:type="tool_1:CreateInstance" typeName="modeloConceitualER::RelationshipLink" referenceName="has_links">
+                  <subModelOperations xsi:type="tool_1:SetValue" featureName="sourceRelation" valueExpression="var:source"/>
+                  <subModelOperations xsi:type="tool_1:SetValue" featureName="targetRelation" valueExpression="var:target"/>
+                </subModelOperations>
+              </firstModelOperations>
+            </initialOperation>
+          </ownedTools>
+          <ownedTools xsi:type="tool:NodeCreationDescription" name="Attribute" nodeMappings="//@ownedViewpoints[name='Viewpoint']/@ownedRepresentations[name='Diagram']/@defaultLayer/@nodeMappings[name='Attribute']">
+            <variable name="container"/>
+            <viewVariable name="containerView"/>
+            <initialOperation>
+              <firstModelOperations xsi:type="tool_1:ChangeContext" browseExpression="var:container">
+                <subModelOperations xsi:type="tool_1:CreateInstance" typeName="modeloConceitualER::Attribute" referenceName="has_elements">
+                  <subModelOperations xsi:type="tool_1:SetValue" featureName="name" valueExpression="aql:'atributo'+container.has_elements->filter(modeloConceitualER::Attribute)->size()"/>
+                </subModelOperations>
+              </firstModelOperations>
+            </initialOperation>
+          </ownedTools>
+          <ownedTools xsi:type="tool:EdgeCreationDescription" name="AttributeLink" precondition="aql:preTarget.differs(preSource)" edgeMappings="//@ownedViewpoints[name='Viewpoint']/@ownedRepresentations[name='Diagram']/@defaultLayer/@edgeMappings[name='AttributeLink']" extraSourceMappings="//@ownedViewpoints[name='Viewpoint']/@ownedRepresentations[name='Diagram']/@defaultLayer/@nodeMappings[name='Attribute'] //@ownedViewpoints[name='Viewpoint']/@ownedRepresentations[name='Diagram']/@defaultLayer/@nodeMappings[name='Entity'] //@ownedViewpoints[name='Viewpoint']/@ownedRepresentations[name='Diagram']/@defaultLayer/@nodeMappings[name='Relationship']" extraTargetMappings="//@ownedViewpoints[name='Viewpoint']/@ownedRepresentations[name='Diagram']/@defaultLayer/@nodeMappings[name='Attribute']">
+            <sourceVariable name="source"/>
+            <targetVariable name="target"/>
+            <sourceViewVariable name="sourceView"/>
+            <targetViewVariable name="targetView"/>
+            <initialOperation>
+              <firstModelOperations xsi:type="tool_1:ChangeContext" browseExpression="[source.eContainer()/]">
+                <subModelOperations xsi:type="tool_1:CreateInstance" typeName="modeloConceitualER::AttributeLink" referenceName="has_links">
+                  <subModelOperations xsi:type="tool_1:SetValue" featureName="sourceAttribute" valueExpression="var:source"/>
+                  <subModelOperations xsi:type="tool_1:SetValue" featureName="targetAttribute" valueExpression="var:target"/>
+                </subModelOperations>
+              </firstModelOperations>
+            </initialOperation>
+          </ownedTools>
+          <ownedTools xsi:type="tool:DeleteElementDescription" name="Entity Instances">
+            <element name="element"/>
+            <elementView name="elementView"/>
+            <containerView name="containerView"/>
+            <initialOperation>
+              <firstModelOperations xsi:type="tool_1:ChangeContext" browseExpression="var:element">
+                <subModelOperations xsi:type="tool_1:For" expression="aql:self.entity+self.attributeLink2.targetAttribute+self.attributeLink2">
+                  <subModelOperations xsi:type="tool_1:RemoveElement"/>
+                </subModelOperations>
+                <subModelOperations xsi:type="tool_1:RemoveElement"/>
+              </firstModelOperations>
+            </initialOperation>
+          </ownedTools>
+          <ownedTools xsi:type="tool:DeleteElementDescription" name="Relationship Instances">
+            <element name="element"/>
+            <elementView name="elementView"/>
+            <containerView name="containerView"/>
+            <initialOperation>
+              <firstModelOperations xsi:type="tool_1:ChangeContext" browseExpression="var:element">
+                <subModelOperations xsi:type="tool_1:For" expression="aql:self.relationship+self.attributeLink2+self.attributeLink2.targetAttribute">
+                  <subModelOperations xsi:type="tool_1:RemoveElement"/>
+                </subModelOperations>
+                <subModelOperations xsi:type="tool_1:RemoveElement"/>
+              </firstModelOperations>
+            </initialOperation>
+          </ownedTools>
+          <ownedTools xsi:type="tool:DeleteElementDescription" name="Attribute Instances">
+            <element name="element"/>
+            <elementView name="elementView"/>
+            <containerView name="containerView"/>
+            <initialOperation>
+              <firstModelOperations xsi:type="tool_1:ChangeContext" browseExpression="var:element">
+                <subModelOperations xsi:type="tool_1:For" expression="aql:self.attributeLink1">
+                  <subModelOperations xsi:type="tool_1:RemoveElement"/>
+                </subModelOperations>
+                <subModelOperations xsi:type="tool_1:For" expression="aql:self.attributeLink2+self.attributeLink2.targetAttribute">
+                  <subModelOperations xsi:type="tool_1:RemoveElement"/>
+                </subModelOperations>
+                <subModelOperations xsi:type="tool_1:RemoveElement"/>
+              </firstModelOperations>
+            </initialOperation>
+          </ownedTools>
+        </toolSections>
+      </defaultLayer>
+    </ownedRepresentations>
+  </ownedViewpoints>
+</description:Group>
